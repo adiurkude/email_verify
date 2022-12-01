@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://www.kgswm.com/registrationlogin/register.php -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="mystyle1.css">
+    <title>Register Page</title>
+    <SCript type="text/javascript" src="jquery-3.6.0.js"></SCript>
+</head>
+
+<body>
+
+    <div class="main-container">
+        <div class="logo-image-cover">
+            <img class="logo-image" src="logo.png" alt="kgs-logo">
+        </div>
+        <div class="register-form">
+
+            <h3 class="register-heading">Register Here</h3>
+
+            <form class="main-form" >
+                <div>
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" class="form-input" placeholder="Name..." id="name" name="fullName">
+                    <small id="name_warning">Enter name first</small>
+                </div>
+
+                <div class="email_div">
+                    <label for="email" class="form-label">Email</label>
+                    <div class="emailfield">
+                        <input type="email" class="form-input" id="email" placeholder="abc@xyz.com" name="email">
+                        <div class="hov" id="sendCode">
+                            <input type="button" class="Button otp-button" id="sendOTPButton" name="sendOTPButton" onclick="send_otp()" value="Send Code">
+                        </div>
+                    </div>
+                    <small id="email_warning">Enter email first</small>
+                    <div class="flex">
+                        <label for="OTP" class="form-label">Verify OTP</label>
+                            <div class="otpinput">
+                                <input type="text" class="form-input" id="OTP"  placeholder="******" name="OTP">
+                                <small id="otp_warning">Otp Not-Verified</small>
+                            </div>
+                      <div class="hov"><button type="submit" class="Button otp-button" id="validateOTPButton" onclick="verify()" name="validateOTPButton">Validate</button></div>  
+                        <div class="hov"><input type="button" class="Button otp-button" id="resendOTPButton" onclick="send_otp()" name="resendOTPButton" value="Resend Code"></div>
+                    </div>
+                </div>
+
+
+                <div>
+                    <label for="country" class="form-label">Country</label>
+                    <input type="text" class="form-input" id="country" placeholder="Country..." name="country">
+                    <small id="country_warning"></small>
+                </div>
+
+                <div>
+                    <div class="file-container">
+                        <label for="identity_proof" class="form-label">Identity proof</label>
+                        <label for="identity_proof" class="Button otp-button">Select file</label>
+                    </div>
+                    <input id="identity_proof" name="identity_proof" class="form-input file-input" type="file" value="Select file" accept="application/pdf,image/jpg,image/jpeg,image/png">
+                    <span class="proof-span-tag">(Govt. ID or Passport- pdf, jpg, jpeg, png)</span>
+                    <small id="identity_warning"></small>
+                </div>
+
+                <div>
+                    <div class="file-container">
+                        <label for="address_proof" class="form-label">Address proof</label>
+                        <label for="address_proof" class="Button otp-button">Select file</label>
+                    </div>
+                    <input id="address_proof" name="address_proof" class="form-input file-input" type="file" value="Select file" accept="application/pdf,image/jpg,image/jpeg,image/png">
+                    <span class="proof-span-tag">(Govt. ID or Passport- pdf, jpg, jpeg, png)</span>
+                    <small id="address_warning"></small>
+                </div>
+
+                <div class="terms">
+                    <div class="termsbox">
+                        <input type="checkbox" id="terms" name="terms" onclick="condition()" class="ckbox" required="">
+                        <label for="terms">I agree to the Terms of Agreement</label>
+                    </div>
+                    <small id="terms_warning"></small>
+                    <input type="submit" name="submit" id="submit_form" class="Button signupButton" value="Sign up">
+                </div>
+
+            </form>
+        </div>
+    </div>
+    
+
+    <script>
+        var otp;
+        var cond;
+        function send_otp(){
+            var email=document.getElementById("email").value;
+            var name=document.getElementById('name').value;
+            if(email=='' && name==''){
+                alert('Enter the fields');
+            }
+            else{
+                otp=111111+ Math.floor(Math.random() * 999999);
+                $.ajax({
+                    url : "send.php",
+                    type: "POST",
+                    data : {name : name, email : email, OTP : otp},
+                    success : function(data){
+                        if(data==1){alert("already exist");}
+                        else{alert("send");}
+                        console.log(data);
+                    }
+                });
+
+                //console.log(name + email);
+                //console.log(otp);
+            }
+        
+        }
+
+        function verify(){
+            var check=document.getElementById("OTP").value
+            if(check==''){
+                alert('Enter the OTP');
+            }
+            else if(check!=otp){
+                alert('Email not verified please enter OTP correctly');
+            }
+            else{
+                cond=true;
+                alert('Email verified');
+            }
+        }
+        function condition(){
+            var checkb=document.getElementById('terms');
+            if(cond){
+                checkb.checked=true;
+            }
+            else{
+                checkb.checked=false;
+                alert('You have not verified the email');
+            }
+        }
+
+    </script>
+
+
+</body></html>
